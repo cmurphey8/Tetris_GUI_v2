@@ -1,8 +1,8 @@
 /**************************************************************************************************
  *
- *  JPanel extension Class with a GridBagLayout to house (gridY x gridX) Cell objects
- *  NOTE: Cells represent the background (black) and tetroid (color[row][col]) blocks!
- *  CALLED BY: View.java & SidePane.java
+ *  JPanel extension Class with a BorderLayout to host High Scores
+ *  CALLED BY: View.java
+ * 
  **************************************************************************************************/
 
 import java.awt.*;
