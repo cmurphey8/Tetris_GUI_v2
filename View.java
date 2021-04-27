@@ -87,7 +87,7 @@ public class View extends TetraSet implements KeyListener {
         frame.revalidate();
     }
 
-    // true if new high score >> setup high scores page
+    // true if new high score << >> setup high scores page
     public boolean gameOver(Shape next, long score) {
         savedScores = new String[10];
         int index = 0;
@@ -129,7 +129,7 @@ public class View extends TetraSet implements KeyListener {
         return highScore;
     }
 
-    // update high scores page for each new key entry
+    // update high scores page for each new key entry until initials are complete
     public void gameInitials(Shape next, long score, String initials) {
         String newInitials = " _ _ _";
         switch (initials.length()) {
