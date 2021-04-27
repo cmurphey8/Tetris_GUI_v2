@@ -7,15 +7,13 @@
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 public class GridPane extends JPanel {
     GridBagLayout layout = new GridBagLayout();
     public GridPane(Color[][] color, int gridX, int gridY) {
 
-        Border border = new LineBorder(Color.CYAN, 3, true);
-        setBorder(border);
+        setBorder(new LineBorder(Color.CYAN, 3, true));
         setBackground(Color.DARK_GRAY);
         setLayout(layout);
         updateGrid(color, gridX, gridY);

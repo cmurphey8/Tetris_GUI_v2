@@ -78,12 +78,12 @@ public class View extends TetraSet implements KeyListener {
     
     public void playLayout(Shape next, long score) {
         // fill CENTER >> (expands) >> component of BorderLayout() with gridY x gridX cells 
-        GridPane panel = new GridPane(frameC, gridX, gridY);
-        frame.add(panel, BorderLayout.CENTER);
+        frame.add(new GridPane(frameC, gridX, gridY), BorderLayout.CENTER);
         
         // fill LINE_END component of BorderLayout() >> (fixed)
-        SidePane sidePane = new SidePane(next, score);
-        frame.add(sidePane, BorderLayout.LINE_END);
+        frame.add(new SidePane(next, score), BorderLayout.LINE_END);
+
+        // refresh the frame
         frame.revalidate();
     }
 
@@ -121,10 +121,9 @@ public class View extends TetraSet implements KeyListener {
                 break;
             }
         }
+
         frame.add(new ScoresPane(highScore, savedScores), BorderLayout.CENTER);
-        
-        SidePane sidePane = new SidePane(next, score);
-        frame.add(sidePane, BorderLayout.LINE_END);
+        frame.add(new SidePane(next, score), BorderLayout.LINE_END);
         frame.revalidate();
         return highScore;
     }
@@ -147,10 +146,9 @@ public class View extends TetraSet implements KeyListener {
         if (highScore) {
             savedScores[newIndex] = String.valueOf(score) + newInitials;
         } 
+
         frame.add(new ScoresPane(highScore, savedScores), BorderLayout.CENTER);
-        
-        SidePane sidePane = new SidePane(next, score);
-        frame.add(sidePane, BorderLayout.LINE_END);
+        frame.add(new SidePane(next, score), BorderLayout.LINE_END);
         frame.revalidate();
     }
 

@@ -34,8 +34,7 @@ public class SidePane extends JPanel {
         }
 
         // next block grid init & add
-        GridPane panel = new GridPane(nextC, 6, 4);
-        add(panel);
+        add(new GridPane(nextC, 6, 4));
 
         /* TODO:     
             (1) choose a Layout Manager to nest (add) here in SidePane
