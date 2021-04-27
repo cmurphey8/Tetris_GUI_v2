@@ -19,6 +19,11 @@ public class View extends TetraSet implements KeyListener {
     JFrame frame = new JFrame();
     Color[][] frameC;
     Color[] nextC;
+
+    boolean highScore;
+    int newIndex;
+    String[] savedScores;
+
     final Dimension dim = new Dimension(475, 600);
     static View test = new View();
 
@@ -76,10 +81,48 @@ public class View extends TetraSet implements KeyListener {
         frame.revalidate();
     }
 
-    public void gameOver(Shape next, long score, String initials) {
-        String[] savedScores = new String[10];
+    public boolean gameOver(Shape next, long score) {
+        savedScores = new String[10];
         int index = 0;
 
+        String newInitials = " _ _ _";
+
+        // read in saved scores from file
+        try {
+            File myObj = new File("scores.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                savedScores[index++] = myReader.nextLine();
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        highScore = false;
+        newIndex = -1;
+        for (int i = 0; i < index; i++) {
+            if (score > Long.parseLong(savedScores[i].split(" ")[0])) {
+                highScore = true;
+                newIndex = i;
+                for (int j = index - 1; j > i; j--) {
+                    savedScores[j] = savedScores[j - 1];
+                }
+
+                savedScores[i] = String.valueOf(score) + newInitials;
+                break;
+            }
+        }
+        frame.add(new ScoresPane(highScore, savedScores), BorderLayout.CENTER);
+        
+        SidePane sidePane = new SidePane(next, score);
+        frame.add(sidePane, BorderLayout.LINE_END);
+        frame.revalidate();
+        return highScore;
+    }
+
+    public void gameInitials(Shape next, long score, String initials) {
         String newInitials = " _ _ _";
         switch (initials.length()) {
             case 1:
@@ -93,35 +136,10 @@ public class View extends TetraSet implements KeyListener {
                 break;
         }
 
-        // read in saved scores from file
-        try {
-            File myObj = new File("scores.txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                savedScores[index++] = myReader.nextLine();
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-
-        boolean highScore = false;
-        int newIndex = -1;
-        for (int i = 0; i < index; i++) {
-            System.out.println(savedScores[i]);
-            if (score > Long.parseLong(savedScores[i].split(" ")[0])) {
-                highScore = true;
-                newIndex = i;
-                for (int j = index - 1; j > i; j--) {
-                    savedScores[j] = savedScores[j - 1];
-                }
-
-                savedScores[i] = String.valueOf(score) + newInitials;
-                break;
-            }
-        }
-        frame.add(new ScoresPane(highScore, newIndex, savedScores), BorderLayout.CENTER);
+        if (highScore) {
+            savedScores[newIndex] = String.valueOf(score) + newInitials;
+        } 
+        frame.add(new ScoresPane(highScore, savedScores), BorderLayout.CENTER);
         
         SidePane sidePane = new SidePane(next, score);
         frame.add(sidePane, BorderLayout.LINE_END);
@@ -129,35 +147,7 @@ public class View extends TetraSet implements KeyListener {
     }
 
     public void addHighScore(long score, String initials) {
-        String[] savedScores = new String[10];
         int index = 0;
-
-        // read in saved scores from file
-        try {
-            File myObj = new File("scores.txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                savedScores[index++] = myReader.nextLine();
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-
-        boolean highScore = false;
-        for (int i = 0; i < index; i++) {
-            System.out.println(savedScores[i]);
-            if (score > Long.parseLong(savedScores[i].split(" ")[0])) {
-                highScore = true;
-                for (int j = index - 1; j > i; j--) {
-                    savedScores[j] = savedScores[j - 1];
-                }
-                savedScores[i] = String.valueOf(score) + " " + initials;
-                break;
-            }
-        }
-
         if (highScore) {
             try {
                 File myObj = new File("scores.txt");

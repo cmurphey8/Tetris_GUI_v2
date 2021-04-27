@@ -108,16 +108,16 @@ public class Tetra {
         }
 
         // game over sequence - call for initials
-        String initials = "";
-        frameView.gameOver(nextTetroid, score, initials);
-        while (initials.length() < 3) {
-            if (frameView.hasNextKeyTyped()) {
-                initials += Character.toUpperCase(frameView.nextKeyTyped());
-                frameView.gameOver(nextTetroid, score, initials);
+        if (frameView.gameOver(nextTetroid, score)) {
+            String initials = "";
+            while (initials.length() < 3) {
+                if (frameView.hasNextKeyTyped()) {
+                    initials += Character.toUpperCase(frameView.nextKeyTyped());
+                    frameView.gameInitials(nextTetroid, score, initials);
+                }
             }
+            frameView.addHighScore(score, initials);
         }
-
-        frameView.addHighScore(score, initials);
     }
                 
     // remove block from play if floored

@@ -13,7 +13,7 @@ public class ScoresPane extends JPanel {
     BorderLayout layout = new BorderLayout();
     GridLayout scoresLayout = new GridLayout(10,0);
 
-    public ScoresPane(boolean highScore, int newIndex, String[] savedScores) {
+    public ScoresPane(boolean highScore, String[] savedScores) {
         setLayout(layout);
 
         if (highScore) {
