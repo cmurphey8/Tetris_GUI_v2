@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 import java.io.*;
 import java.util.Scanner; // Import the Scanner class to read text files
 
-public class View extends TetraSet implements KeyListener { 
+public class View extends TetraSet { 
     // game-play variables
     JFrame frame = new JFrame();
     Color[][] frameC;
@@ -28,7 +28,7 @@ public class View extends TetraSet implements KeyListener {
 
     // global sizing
     final Dimension dim = new Dimension(475, 600);
-    static View test = new View();
+    KeyListener test = new Listener();
 
     // key-listener variables
     private static Object keyLock = new Object();
@@ -38,9 +38,6 @@ public class View extends TetraSet implements KeyListener {
 
     // set of key codes currently pressed down
     private static TreeSet<Integer> keysDown = new TreeSet<Integer>();
-    
-    // default constructor for key listener
-    public View () {}
 
     // frame constructor
     public View (Shape next) {
@@ -169,15 +166,14 @@ public class View extends TetraSet implements KeyListener {
     }
 
     /***************************************************************************
-    *  Keyboard interactions.
+    *  Keyboard interactions >> ripped from StdDraw
     ***************************************************************************/
-
     /**
-     * Returns true if the user has typed a key (that has not yet been processed).
-     *
-     * @return {@code true} if the user has typed a key (that has not yet been processed
-     *         by {@link #nextKeyTyped()}; {@code false} otherwise
-     */
+    * Returns true if the user has typed a key (that has not yet been processed).
+    *
+    * @return {@code true} if the user has typed a key (that has not yet been processed
+    *         by {@link #nextKeyTyped()}; {@code false} otherwise
+    */
     public boolean hasNextKeyTyped() {
         synchronized (keyLock) {
             return !keysTyped.isEmpty();
@@ -211,47 +207,48 @@ public class View extends TetraSet implements KeyListener {
      * <p>
      * This method takes the keycode (corresponding to a physical key)
     *  as an argument. It can handle action keys
-     * (such as F1 and arrow keys) and modifier keys (such as shift and control).
-     * See {@link KeyEvent} for a description of key codes.
-     *
-     * @param  keycode the key to check if it is being pressed
-     * @return {@code true} if {@code keycode} is currently being pressed;
-     *         {@code false} otherwise
-     */
+    * (such as F1 and arrow keys) and modifier keys (such as shift and control).
+    * See {@link KeyEvent} for a description of key codes.
+    *
+    * @param  keycode the key to check if it is being pressed
+    * @return {@code true} if {@code keycode} is currently being pressed;
+    *         {@code false} otherwise
+    */
     public boolean isKeyPressed(int keycode) {
         synchronized (keyLock) {
             return keysDown.contains(keycode);
         }
     }
-
-
-    /**
-     * This method cannot be called directly.
-     */
-    @Override
-    public void keyTyped(KeyEvent e) {
-        synchronized (keyLock) {
-            keysTyped.addFirst(e.getKeyChar());
+    
+    private class Listener implements KeyListener {
+        /**
+         * This method cannot be called directly.
+         */
+        @Override
+        public void keyTyped(KeyEvent e) {
+            synchronized (keyLock) {
+                keysTyped.addFirst(e.getKeyChar());
+            }
         }
-    }
 
-    /**
-     * This method cannot be called directly.
-     */
-    @Override
-    public void keyPressed(KeyEvent e) {
-        synchronized (keyLock) {
-            keysDown.add(e.getKeyCode());
+        /**
+         * This method cannot be called directly.
+         */
+        @Override
+        public void keyPressed(KeyEvent e) {
+            synchronized (keyLock) {
+                keysDown.add(e.getKeyCode());
+            }
         }
-    }
 
-    /**
-     * This method cannot be called directly.
-     */
-    @Override
-    public void keyReleased(KeyEvent e) {
-        synchronized (keyLock) {
-            keysDown.remove(e.getKeyCode());
+        /**
+         * This method cannot be called directly.
+         */
+        @Override
+        public void keyReleased(KeyEvent e) {
+            synchronized (keyLock) {
+                keysDown.remove(e.getKeyCode());
+            }
         }
-    }
+	} // end of private class
 } 
