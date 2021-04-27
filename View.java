@@ -16,17 +16,21 @@ import java.io.*;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 public class View extends TetraSet implements KeyListener { 
+    // game-play variables
     JFrame frame = new JFrame();
     Color[][] frameC;
     Color[] nextC;
 
+    // game-over variables
     boolean highScore;
     int newIndex;
     String[] savedScores;
 
+    // global sizing
     final Dimension dim = new Dimension(475, 600);
     static View test = new View();
 
+    // key-listener variables
     private static Object keyLock = new Object();
 
     // queue of typed key characters
@@ -35,8 +39,10 @@ public class View extends TetraSet implements KeyListener {
     // set of key codes currently pressed down
     private static TreeSet<Integer> keysDown = new TreeSet<Integer>();
     
+    // default constructor for key listener
     public View () {}
 
+    // frame constructor
     public View (Shape next) {
         frameC = new Color[gridY][gridX];
         initialFrame(next);
@@ -81,6 +87,7 @@ public class View extends TetraSet implements KeyListener {
         frame.revalidate();
     }
 
+    // true if new high score >> setup high scores page
     public boolean gameOver(Shape next, long score) {
         savedScores = new String[10];
         int index = 0;
@@ -122,6 +129,7 @@ public class View extends TetraSet implements KeyListener {
         return highScore;
     }
 
+    // update high scores page for each new key entry
     public void gameInitials(Shape next, long score, String initials) {
         String newInitials = " _ _ _";
         switch (initials.length()) {
@@ -146,8 +154,8 @@ public class View extends TetraSet implements KeyListener {
         frame.revalidate();
     }
 
+    // write high scores to file after initials are complete
     public void addHighScore(long score, String initials) {
-        int index = 0;
         if (highScore) {
             try {
                 File myObj = new File("scores.txt");
